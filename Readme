@@ -1,0 +1,67 @@
+# Load-Balanced Web App with Nginx
+
+This project demonstrates a **basic load-balanced web application** setup using **Nginx** as the load balancer and simple Python HTTP servers as backend servers.
+
+## **Objective**
+
+Learn how to:
+
+- Set up multiple backend web servers.
+- Configure Nginx as a load balancer.
+- Distribute incoming HTTP requests between backend servers.
+
+## **Prerequisites**
+
+- Linux-based system (Ubuntu recommended)
+- Python 3 installed
+- Nginx installed (script will install if missing)
+- Basic networking knowledge (IP addresses of backend servers)
+
+## **Setup Instructions**
+
+### 1. Clone the repository
+
+git clone <your-repo-url>
+cd <repo-directory>
+
+###2. Make the script executable
+
+chmod +x setup_load_balancer.sh
+
+###3. Run the script on backend servers
+
+./setup_load_balancer.sh
+
+This will:
+
+  Create a ~/webserver directory
+  Add an index.html file displaying the server hostname.
+  Start a Python HTTP server on port 8080.
+
+###4. Run the script on Load Balancer server
+
+./setup_load_balancer.sh
+
+
+When prompted:
+
+  Type yes to indicate this is the Load Balancer server.
+  Enter the IP addresses of your backend servers (space-separated).
+
+The script will:
+
+  Install Nginx if not installed.
+  Configure Nginx for load balancing.
+  Restart Nginx to apply changes.
+
+Test Load Balancing
+
+Open your Load Balancer server IP in a browser:
+
+  http://<load-balancer-ip>
+
+Refresh multiple times. You should see different backend server hostnames, confirming load balancing.
+
+Or test via terminal:
+
+  for i in {1..5}; do curl http://<load-balancer-ip>; done
