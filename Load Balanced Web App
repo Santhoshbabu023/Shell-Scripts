@@ -1,0 +1,57 @@
+#!/bin/bash
+# setup_load_balancer.sh
+# Simple script to setup backend servers and Nginx load balancer
+
+set -euo pipefail
+IFS=$'\n\t'
+
+# --- Backend Server Setup ---
+echo "Setting up backend server..."
+
+mkdir -p ~/webserver
+echo "Server on $(hostname)" > ~/webserver/index.html
+
+# Start Python HTTP server in the background on port 8080
+nohup python3 -m http.server 8080 --directory ~/webserver &>/dev/null &
+echo "Backend server running on port 8080"
+
+# --- Load Balancer Setup (Only on LB server) ---
+read -p "Is this the Load Balancer server? (yes/no): " is_lb
+if [[ "$is_lb" == "yes" ]]; then
+    echo "Installing Nginx..."
+    sudo apt update
+    sudo apt install nginx -y
+
+    echo "Configuring Nginx for load balancing..."
+    read -p "Enter backend server IPs separated by space: " backend_ips
+
+    # Build upstream block
+    upstream_block="upstream backend {\n"
+    for ip in $backend_ips; do
+        upstream_block+="    server $ip:8080;\n"
+    done
+    upstream_block+="}"
+
+    # Build full Nginx config
+    nginx_config="$upstream_block
+
+server {
+    listen 80;
+
+    location / {
+        proxy_pass http://backend;
+        proxy_set_header Host \$host;
+        proxy_set_header X-Real-IP \$remote_addr;
+    }
+}"
+
+    # Write config
+    echo -e "$nginx_config" | sudo tee /etc/nginx/sites-available/default
+
+    # Test and restart Nginx
+    sudo nginx -t
+    sudo systemctl restart nginx
+    echo "Nginx Load Balancer configured successfully!"
+fi
+
+echo "Setup completed!"
