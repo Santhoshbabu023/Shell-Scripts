@@ -1,0 +1,43 @@
+# Network Diagnostic Script
+
+A simple **network diagnostic tool** to check host connectivity, HTTP/HTTPS responses, open ports, and traceroute paths. Ideal for quick network troubleshooting or monitoring multiple servers.
+
+## Features
+
+- **Ping**: Test basic network connectivity.
+- **HTTP/HTTPS Check**: Inspect server response using `curl`.
+- **Port Check**: Verify if TCP ports (e.g., 22, 80, 443) are open.
+- **Traceroute**: Show the route packets take to reach the host.
+
+Works on both **Linux/Ubuntu** and **Windows Git Bash** (with PowerShell for port checks).
+
+
+## Prerequisites
+
+**Linux / Ubuntu:**
+
+- `curl`
+- `nc` (netcat)
+- `traceroute`  
+
+**Windows (Git Bash):**
+
+- `curl`
+- `PowerShell` (for port checks)
+- `tracert` instead of `traceroute`
+
+## Usage
+
+1. Clone the repository:
+
+git clone https://github.com/yourusername/network-diagnostic-script.git
+cd network-diagnostic-script
+
+2. Make the script executable (Linux/Ubuntu):
+
+chmod +x network_check.sh
+
+3. Run the script:
+
+./network_check.sh
+
