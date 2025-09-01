@@ -41,3 +41,23 @@ chmod +x network_check.sh
 
 ./network_check.sh
 
+
+Example Output
+
+Checking google.com ...
+Ping: Success
+HTTP/1.1 301 Moved Permanently
+Port 80: Open
+Port 443: Open
+Port 22: Closed
+Traceroute to google.com done
+---------------------------
+Checking github.com ...
+Ping: Success
+HTTP/1.1 200 OK
+Port 80: Open
+Port 443: Open
+Port 22: Open
+Traceroute to github.com done
+---------------------------
+
